@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopEase - Premium E-Commerce Store</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          ShopEase
+        </div>
+
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-box"
+            class="search-box"
+            placeholder="Search for products, brands and more..."
+          />
+          <button class="search-btn" id="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button class="header-btn">
+            <i class="fas fa-heart"></i>
+            Wishlist
+          </button>
+          <button class="header-btn">
+            <i class="fas fa-shopping-cart"></i>
+            Cart
+          </button>
+          <button class="header-btn">
+            <i class="fas fa-user"></i>
+            Account
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <div class="filter-group">
+          <label for="department-filter" class="filter-label">
+            <i class="fas fa-filter"></i>
+            Filter by Department:
+          </label>
+          <select id="department-filter" class="filter-select">
+            <option value="">All Products</option>
+            <!-- Department options will be populated by JavaScript -->
+          </select>
+        </div>
+        <div class="products-count" id="products-count">
+          Loading products...
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="loading">
+        <i class="fas fa-spinner"></i>
+        Loading amazing products for you...
+      </div>
+
+      <!-- Error State -->
+      <div id="error" class="error" style="display: none">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="error-message"></span>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="products-container" class="products-grid"></div>
+
+      <!-- Pagination Controls -->
+      <div
+        id="pagination-container"
+        class="pagination-container"
+        style="display: none"
+      >
+        <div class="pagination">
+          <button id="prev-btn" class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+
+          <div class="pagination-info">
+            <span id="pagination-text">Page 1 of 1</span>
+          </div>
+
+          <button id="next-btn" class="pagination-btn" disabled>
+            Next
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="pagination-summary">
+          <span id="pagination-summary-text">Showing 1-12 of 100 products</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

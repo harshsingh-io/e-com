@@ -1,3 +1,6 @@
+// Configuration
+const API_BASE_URL = 'http://127.0.0.1:5000';
+
 // JavaScript for product detail page
 document.addEventListener('DOMContentLoaded', function() {
     const loadingElement = document.getElementById('loading');
@@ -133,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(`/api/products/${productId}`)
+        fetch(`${API_BASE_URL}/api/products/${productId}`)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 404) {
