@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template_string, send_from_directory
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -8,6 +9,29 @@ def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row  # This enables column access by name
     return conn
+
+# Serve static files
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)
+
+# Serve index.html at root
+@app.route('/')
+def index():
+    with open('index.html', 'r') as f:
+        return f.read()
+
+# Also serve index.html at /index.html for navigation consistency
+@app.route('/index.html')
+def index_html():
+    with open('index.html', 'r') as f:
+        return f.read()
+
+# Serve product.html
+@app.route('/product.html')
+def product_page():
+    with open('product.html', 'r') as f:
+        return f.read()
 
 @app.route('/api/products', methods=['GET'])
 def get_all_products():
