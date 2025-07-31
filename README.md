@@ -1,4 +1,7 @@
-# E-Commerce Project - Frontend/Backend Architecture
+# E-Commerce Project - Frontend/Backend
+
+![E-Commerce Application Screenshot](screenshot.png)
+
 
 A modern e-commerce web application built with a clean frontend/backend separation. The backend provides a REST API built with Flask, while the frontend is a standalone client application using vanilla HTML, CSS, and JavaScript.
 
