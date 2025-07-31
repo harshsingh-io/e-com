@@ -1,6 +1,5 @@
-from flask import Flask, jsonify, render_template_string, send_from_directory
+from flask import Flask, jsonify, send_from_directory, request
 import sqlite3
-import os
 
 app = Flask(__name__)
 
@@ -33,12 +32,55 @@ def product_page():
     with open('product.html', 'r') as f:
         return f.read()
 
-@app.route('/api/products', methods=['GET'])
-def get_all_products():
-    """GET /api/products - Fetch all products from the database"""
+# NEW: Departments API endpoint
+@app.route('/api/departments', methods=['GET'])
+def get_all_departments():
+    """GET /api/departments - Fetch all departments from the database"""
     try:
         conn = get_db_connection()
-        products = conn.execute('SELECT * FROM products').fetchall()
+        departments = conn.execute('SELECT id, name FROM departments ORDER BY name').fetchall()
+        conn.close()
+        
+        # Convert to list of dictionaries
+        departments_list = []
+        for department in departments:
+            departments_list.append({
+                'id': department['id'],
+                'name': department['name']
+            })
+        
+        return jsonify(departments_list)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/products', methods=['GET'])
+def get_all_products():
+    """GET /api/products - Fetch all products with optional department filtering"""
+    try:
+        conn = get_db_connection()
+        
+        # Check for department_id filter parameter
+        department_id = request.args.get('department_id')
+        
+        if department_id:
+            # Filter by department_id
+            products = conn.execute('''
+                SELECT p.id, p.name, p.price, p.description, d.name as department
+                FROM products p
+                JOIN departments d ON p.department_id = d.id
+                WHERE p.department_id = ?
+                ORDER BY p.id
+            ''', (department_id,)).fetchall()
+        else:
+            # Get all products with department names via JOIN
+            products = conn.execute('''
+                SELECT p.id, p.name, p.price, p.description, d.name as department
+                FROM products p
+                JOIN departments d ON p.department_id = d.id
+                ORDER BY p.id
+            ''').fetchall()
+        
         conn.close()
         
         # Convert to list of dictionaries
@@ -59,10 +101,15 @@ def get_all_products():
 
 @app.route('/api/products/<int:product_id>', methods=['GET'])
 def get_product_by_id(product_id):
-    """GET /api/products/<id> - Fetch a single product by its ID"""
+    """GET /api/products/<id> - Fetch a single product by its ID with department name"""
     try:
         conn = get_db_connection()
-        product = conn.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
+        product = conn.execute('''
+            SELECT p.id, p.name, p.price, p.description, d.name as department
+            FROM products p
+            JOIN departments d ON p.department_id = d.id
+            WHERE p.id = ?
+        ''', (product_id,)).fetchone()
         conn.close()
         
         if product is None:
