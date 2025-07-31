@@ -98,6 +98,22 @@
             font-size: 0.8rem;
             display: inline-block;
         }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-section label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .filter-section select {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +123,15 @@
     </header>
 
     <div class="container">
+        <!-- NEW: Department Filter Dropdown -->
+        <div class="filter-section">
+            <label for="department-filter">Filter by Department:</label>
+            <select id="department-filter">
+                <option value="">All Products</option>
+                <!-- Department options will be populated by JavaScript -->
+            </select>
+        </div>
+
         <div id="loading" class="loading">Loading products...</div>
         <div id="error" class="error" style="display: none;"></div>
         <div id="products-container" class="products-grid"></div>

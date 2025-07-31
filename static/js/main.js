@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingElement = document.getElementById('loading');
     const errorElement = document.getElementById('error');
     const productsContainer = document.getElementById('products-container');
+    const departmentFilter = document.getElementById('department-filter');
 
     // Function to show error message
     function showError(message) {
@@ -60,9 +61,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to fetch and display all products
-    function loadProducts() {
-        fetch('/api/products')
+    // Function to fetch and display products (with optional department filter)
+    function loadProducts(departmentId = null) {
+        // Show loading while fetching
+        loadingElement.style.display = 'block';
+        hideMessages();
+        
+        // Build API URL with optional department filter
+        let apiUrl = '/api/products';
+        if (departmentId) {
+            apiUrl += `?department_id=${departmentId}`;
+        }
+
+        fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,6 +89,40 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Load products when page loads
-    loadProducts();
+    // Function to load and populate departments dropdown
+    function loadDepartments() {
+        fetch('/api/departments')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(departments => {
+                // Clear existing options (except "All Products")
+                departmentFilter.innerHTML = '<option value="">All Products</option>';
+                
+                // Add department options
+                departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name;
+                    departmentFilter.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching departments:', error);
+                // Don't show error for departments as it's not critical
+            });
+    }
+
+    // Event listener for department filter change
+    departmentFilter.addEventListener('change', function() {
+        const selectedDepartmentId = this.value;
+        loadProducts(selectedDepartmentId || null);
+    });
+
+    // Initialize page
+    loadDepartments(); // Load departments for the dropdown
+    loadProducts();    // Load all products initially
 });
