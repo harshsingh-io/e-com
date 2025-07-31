@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 def get_db_connection():
     """Helper function to get database connection"""
@@ -9,22 +11,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row  # This enables column access by name
     return conn
 
-# Serve index.html using Flask's render_template
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-# Also serve index.html at /index.html for navigation consistency
-@app.route('/index.html')
-def index_html():
-    return render_template('index.html')
-
-# Serve product.html using Flask's render_template
-@app.route('/product.html')
-def product_page():
-    return render_template('product.html')
-
-# NEW: Departments API endpoint
+# API Routes only - no template serving
 @app.route('/api/departments', methods=['GET'])
 def get_all_departments():
     """GET /api/departments - Fetch all departments from the database"""

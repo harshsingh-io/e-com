@@ -1,3 +1,6 @@
+// Configuration
+const API_BASE_URL = 'http://127.0.0.1:5000';
+
 // Main JavaScript for product list page
 document.addEventListener('DOMContentLoaded', function() {
     const loadingElement = document.getElementById('loading');
@@ -178,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentSearchQuery = searchQuery;
         
         // Build API URL with all parameters
-        let apiUrl = `/api/products?page=${page}&per_page=12`;
+        let apiUrl = `${API_BASE_URL}/api/products?page=${page}&per_page=12`;
         if (departmentId) {
             apiUrl += `&department_id=${departmentId}`;
         }
@@ -223,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to load and populate departments dropdown
     function loadDepartments() {
-        fetch('/api/departments')
+        fetch(`${API_BASE_URL}/api/departments`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

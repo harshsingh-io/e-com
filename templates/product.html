@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details - ShopEase</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/product.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="{{ url_for('index') }}" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          ShopEase
+        </a>
+
+        <div class="header-actions">
+          <a href="{{ url_for('index') }}" class="header-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Products
+          </a>
+          <button class="header-btn">
+            <i class="fas fa-heart"></i>
+            Wishlist
+          </button>
+          <button class="header-btn">
+            <i class="fas fa-shopping-cart"></i>
+            Cart
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="{{ url_for('index') }}">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+        <span>/</span>
+        <a href="{{ url_for('index') }}">Products</a>
+        <span>/</span>
+        <span id="breadcrumb-product">Product Details</span>
+      </nav>
+
+      <!-- Loading State -->
+      <div id="loading" class="loading">
+        <i class="fas fa-spinner"></i>
+        Loading product details...
+      </div>
+
+      <!-- Error State -->
+      <div id="error" class="error" style="display: none">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div id="error-message"></div>
+      </div>
+
+      <!-- Product Detail -->
+      <div id="product-container" style="display: none"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+  </body>
+</html>
